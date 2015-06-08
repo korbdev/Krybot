@@ -6,20 +6,20 @@
 CPP_SRCS += \
 ../src/Communication/Connection.cpp \
 ../src/Communication/Message.cpp \
-../src/Communication/MessageDistributor.cpp \
-../src/Communication/MessageSimulator.cpp 
+../src/Communication/MessageSimulator.cpp \
+../src/Communication/Serial.cpp 
 
 OBJS += \
 ./src/Communication/Connection.o \
 ./src/Communication/Message.o \
-./src/Communication/MessageDistributor.o \
-./src/Communication/MessageSimulator.o 
+./src/Communication/MessageSimulator.o \
+./src/Communication/Serial.o 
 
 CPP_DEPS += \
 ./src/Communication/Connection.d \
 ./src/Communication/Message.d \
-./src/Communication/MessageDistributor.d \
-./src/Communication/MessageSimulator.d 
+./src/Communication/MessageSimulator.d \
+./src/Communication/Serial.d 
 
 
 # Each subdirectory must supply rules for building sources it contributes

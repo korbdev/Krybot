@@ -12,23 +12,37 @@ using namespace std;
 Connection::Connection(int interval){
 	this->interval = interval;
 	connected = false;
-	//t = thread(&Connection::operator (), this);
 }
 
 Connection::~Connection(){
-	//t.join();
+
 }
 
-void Connection::test(){
-	cout << "Hello thread" << endl;
+bool Connection::connect(){
+	t = thread(&Connection::operator (), this);
+	connected = true;
+	return initializeConnection();
+}
+
+bool Connection::disconnect(){
+	t.join();
+	connected = false;
+	return closeConnection();
+}
+
+Message Connection::get(){
+	return queue.pop();
 }
 
 void Connection::operator ()(){
 	cout << "Start threading operator" << endl;
 	while(true){
 			Message msg = read();
-			queue.push(msg);
-			std::this_thread::sleep_for(chrono::milliseconds(1000));
+			if(!msg.isEmpty()){
+				cout << msg.getStringValue("message", "default") << endl;
+				queue.push(msg);
+			}
+			std::this_thread::sleep_for(chrono::milliseconds(interval));
 		}
 }
 

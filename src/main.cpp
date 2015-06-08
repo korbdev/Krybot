@@ -11,38 +11,33 @@
 #include <Communication/Message.h>
 #include <Communication/MessageSimulator.h>
 #include <Communication/Connection.h>
+#include <Communication/Serial.h>
 #include <Collections/MessageQueue.h>
 #include <thread>
 
 using namespace std;
-void f(MessageQueue* queue);
-void g(MessageQueue* queue);
+//void f(MessageQueue* queue);
+//void g(MessageQueue* queue);
 
 
 
 int main(){
 
 	std::cout << "Krybot starting..." << std::endl;
-	/*MessageQueue* queue = new MessageQueue();
-	thread t1(f, queue);
-	thread t2(g, queue);
-	t1.join();
-	t2.join();
-	delete(queue);*/
-	MessageSimulator m(2000);
 
-	//m->read();
-	//c->connect();
-	//thread t1(&Connection::operator(), &m);
-	//m.start(d);
-	//t1.join();
+	MessageSimulator m(2000);
+	Serial n(3000, 9600, "/dev/ttyS2");
+
 	m.connect();
+	n.connect();
+
 	m.disconnect();
+	n.disconnect();
 	std::cout << "EXIT" << std::endl;
 	return 0;
 }
 
-void f(MessageQueue* queue){
+/*void f(MessageQueue* queue){
 	int counter = 0;
 	while(true){
 		counter++;
@@ -59,4 +54,4 @@ void g(MessageQueue* queue){
 		std::cout << "POP " << m.getIntegerValue("id", 0) << std::endl;
 		this_thread::sleep_for(chrono::milliseconds(500));
 	}
-}
+}*/

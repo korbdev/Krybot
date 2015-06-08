@@ -9,7 +9,6 @@
 #define CONNECTION_H_
 
 #include <Collections/MessageQueue.h>
-#include <Communication/MessageDistributor.h>
 #include <Communication/Message.h>
 #include <thread>
 #include <mutex>
@@ -22,14 +21,16 @@ protected:
 	bool connected;
 	int interval;
 	std::thread t;
+	virtual bool initializeConnection() = 0;
+	virtual bool closeConnection() = 0;
 public:
 	Connection(int interval);
 	virtual ~Connection();
-	virtual bool connect() = 0;
-	virtual bool disconnect() = 0;
+	bool connect();
+	bool disconnect();
 	virtual Message read() = 0;
 	virtual bool write(Message msg) = 0;
-	virtual Message get() = 0;
+	Message get();
 	void test();
 	virtual void operator()();
 };

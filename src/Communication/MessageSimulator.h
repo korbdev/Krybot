@@ -9,17 +9,17 @@
 #define MESSAGESIMULATOR_H_
 
 #include <Communication/Connection.h>
-#include <Communication/MessageDistributor.h>
 
 class MessageSimulator : public Connection {
+private:
+
 public:
 	MessageSimulator(int interval):Connection(interval){}
 	~MessageSimulator() override {};
-	bool connect() override;
-	bool disconnect() override;
+	bool initializeConnection();
+	bool closeConnection();
 	Message read() override;
 	bool write(Message msg) override;
-	Message get() override;
 };
 
 

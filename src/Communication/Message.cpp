@@ -14,6 +14,10 @@ Message::Message(std::string message){
 	timestamp = 0;
 }
 
+bool Message::isEmpty(){
+	return (msg == "");
+}
+
 std::string Message::getMessage(){
 	return msg;
 }

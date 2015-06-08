@@ -9,15 +9,11 @@
 #include <iostream>
 #include <thread>
 
-bool MessageSimulator::connect(){
-	connected = true;
-	t = std::thread(&Connection::operator (), this);
+bool MessageSimulator::initializeConnection(){
 	return true;
 }
 
-bool MessageSimulator::disconnect(){
-	connected = false;
-	t.join();
+bool MessageSimulator::closeConnection(){
 	return true;
 }
 
@@ -27,10 +23,5 @@ bool MessageSimulator::write(Message msg){
 
 Message MessageSimulator::read(){
 	Message msg("test");
-	std::cout << msg.getMessage() << std::endl;
 	return msg;
-}
-
-Message MessageSimulator::get(){
-	return queue.pop();
 }
