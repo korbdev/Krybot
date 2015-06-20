@@ -8,7 +8,7 @@
 #ifndef CONNECTION_H_
 #define CONNECTION_H_
 
-#include <Collections/MessageQueue.h>
+#include <Collections/ThreadingQueue.h>
 #include <Communication/Message.h>
 #include <thread>
 #include <mutex>
@@ -16,15 +16,16 @@
 class MessageDistributor;
 
 class Connection{
-protected:
-	MessageQueue queue;
-	bool connected;
-	int interval;
+private:
 	std::thread t;
+	bool connected;
+	ThreadingQueue<Message>* queue;
+protected:
+	int interval;
 	virtual bool initializeConnection() = 0;
 	virtual bool closeConnection() = 0;
 public:
-	Connection(int interval);
+	Connection(int interval, ThreadingQueue<Message>* queue);
 	virtual ~Connection();
 	bool connect();
 	bool disconnect();

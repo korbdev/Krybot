@@ -6,10 +6,15 @@
  */
 
 #include <Communication/MessageSimulator.h>
+#include <Communication/Connection.h>
 #include <iostream>
 #include <thread>
+#include <string>
+
+using namespace std;
 
 bool MessageSimulator::initializeConnection(){
+	cout << "init simulator" << endl;
 	return true;
 }
 
@@ -18,10 +23,15 @@ bool MessageSimulator::closeConnection(){
 }
 
 bool MessageSimulator::write(Message msg){
+	string message = msg.getMessage();
+
+	for(unsigned int i = 0; i < message.length(); i++){
+		cout << typeid(message[i]).name() << endl;
+	}
 	return true;
 }
 
 Message MessageSimulator::read(){
-	Message msg("test");
+	Message msg("{\"HCSR01\":12345}");
 	return msg;
 }

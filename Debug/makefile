@@ -8,6 +8,8 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include src/Sensors/subdir.mk
+-include src/Modules/subdir.mk
 -include src/External/JsonCpp/subdir.mk
 -include src/Communication/subdir.mk
 -include src/Collections/subdir.mk

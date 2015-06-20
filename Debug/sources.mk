@@ -24,6 +24,8 @@ C_UPPER_DEPS :=
 # Every subdirectory with source files must be described here
 SUBDIRS := \
 src \
+src/Sensors \
+src/Modules \
 src/External/JsonCpp \
 src/Communication \
 src/Collections \

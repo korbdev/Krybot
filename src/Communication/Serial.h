@@ -11,6 +11,7 @@
 #include <string>
 #include <Communication/Message.h>
 #include <Communication/Connection.h>
+#include <Collections/ThreadingQueue.h>
 
 using namespace std;
 
@@ -23,7 +24,7 @@ protected:
 	virtual bool initializeConnection() override;
 	virtual bool closeConnection() override;
 public:
-	Serial(int interval, int baudrate, string path):Connection(interval), baudrate(baudrate), path(path), fd(-1){}
+	Serial(int interval, int baudrate, string path, ThreadingQueue<Message>* queue):Connection(interval, queue), baudrate(baudrate), path(path), fd(-1){}
 	virtual Message read() override;
 	virtual bool write(Message msg) override;
 	char readByte();

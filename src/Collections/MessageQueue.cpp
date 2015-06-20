@@ -9,7 +9,8 @@
 
 void MessageQueue::push(const Message& msg){
 	std::unique_lock<std::mutex> lock(monitorMutex);
-	queue.push(msg);
+	Message* m = new Message(msg.getMessage());
+	queue.push(m);
 	condition.notify_one();
 }
 
@@ -18,8 +19,10 @@ Message MessageQueue::pop(){
 	while(queue.empty()){
 		condition.wait(lock);
 	}
-	Message msg = queue.front();
+	Message* pmsg = queue.front();
+	Message msg(pmsg->getMessage());
 	queue.pop();
+	delete pmsg;
 	condition.notify_one();
 	return msg;
 }

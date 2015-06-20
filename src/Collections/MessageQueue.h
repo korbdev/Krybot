@@ -16,7 +16,7 @@
 
 class MessageQueue {
 private:
-	std::queue<Message> 	queue;
+	std::queue<Message*> 	queue;
 	std::mutex 				monitorMutex;
 	std::condition_variable condition;
 public:

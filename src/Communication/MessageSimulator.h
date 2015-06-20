@@ -9,12 +9,13 @@
 #define MESSAGESIMULATOR_H_
 
 #include <Communication/Connection.h>
+#include <Collections/ThreadingQueue.h>
 
 class MessageSimulator : public Connection {
 private:
 
 public:
-	MessageSimulator(int interval):Connection(interval){}
+	MessageSimulator(int interval, ThreadingQueue<Message>* queue):Connection(interval, queue){}
 	~MessageSimulator() override {};
 	bool initializeConnection();
 	bool closeConnection();

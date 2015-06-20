@@ -9,13 +9,29 @@
 
 using namespace std;
 
-Connection::Connection(int interval){
+Connection::Connection(int interval, ThreadingQueue<Message>* queue){
 	this->interval = interval;
+	this->queue = queue;
 	connected = false;
 }
 
 Connection::~Connection(){
 
+}
+
+Message Connection::get(){
+	return queue->s_pop();
+}
+
+void Connection::operator ()(){
+	while(connected){
+			Message msg = read();
+			if(!msg.isEmpty()){
+				queue->s_push(msg);
+				cout << "CONNECTION READ " << msg.getMessage() << endl;
+			}
+			std::this_thread::sleep_for(chrono::milliseconds(interval));
+		}
 }
 
 bool Connection::connect(){
@@ -29,20 +45,3 @@ bool Connection::disconnect(){
 	connected = false;
 	return closeConnection();
 }
-
-Message Connection::get(){
-	return queue.pop();
-}
-
-void Connection::operator ()(){
-	cout << "Start threading operator" << endl;
-	while(true){
-			Message msg = read();
-			if(!msg.isEmpty()){
-				cout << msg.getStringValue("message", "default") << endl;
-				queue.push(msg);
-			}
-			std::this_thread::sleep_for(chrono::milliseconds(interval));
-		}
-}
-

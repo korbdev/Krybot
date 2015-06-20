@@ -18,7 +18,7 @@ bool Message::isEmpty(){
 	return (msg == "");
 }
 
-std::string Message::getMessage(){
+std::string Message::getMessage() const{
 	return msg;
 }
 

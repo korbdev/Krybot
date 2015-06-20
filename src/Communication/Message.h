@@ -21,7 +21,7 @@ private:
 public:
 	Message(std::string msg);
 	bool			isEmpty();
-	std::string 	getMessage();
+	std::string 	getMessage() const;
 	std::string 	getStringValue(std::string key, std::string defaultValue);
 	int 			getIntegerValue(std::string key, int defaultValue);
 	double			getDoubleValue(std::string key, double defaultValue);

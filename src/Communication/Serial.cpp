@@ -17,26 +17,28 @@
 bool Serial::initializeConnection(){
 	struct termios serial;
 
-		fd = open(path.c_str(), O_RDWR | O_NOCTTY | O_NDELAY);
+	fd = open(path.c_str(), O_RDWR | O_NOCTTY | O_NDELAY);
 
-		if(fd == -1){
-			return false;
-		}
+	if(fd == -1){
+		std::cout << "could not open file" << std::endl;
+		return false;
+	}
 
-		if (tcgetattr(fd, &serial) < 0){
-			return false;
-		}
+	if (tcgetattr(fd, &serial) < 0){
+		std::cout << "could not get settings" << std::endl;
+		return false;
+	}
 
-		serial.c_iflag = 0;
-		serial.c_oflag = 0;
-		serial.c_lflag = 0;
-		serial.c_cflag = 0;
-		serial.c_cc[VMIN] = 0;
-		serial.c_cc[VTIME] = 0;
+	serial.c_iflag = 0;
+	serial.c_oflag = 0;
+	serial.c_lflag = 0;
+	serial.c_cflag = 0;
+	serial.c_cc[VMIN] = 0;
+	serial.c_cc[VTIME] = 0;
 
-		serial.c_cflag = B9600 | CS8| CREAD | CSTOPB;
-		tcsetattr(fd, TCSANOW, &serial);
-		return true;
+	serial.c_cflag = B9600 | CS8| CREAD | CSTOPB;
+	tcsetattr(fd, TCSANOW, &serial);
+	return true;
 }
 
 bool Serial::closeConnection(){
@@ -45,6 +47,11 @@ bool Serial::closeConnection(){
 }
 
 bool Serial::write(Message msg){
+	string message = msg.getMessage();
+
+	for(int i = 0; i < message.length(); i++){
+		cout << message[i] << endl;
+	}
 	return false;
 }
 
@@ -69,7 +76,9 @@ Message Serial::read(){
 char Serial::readByte(){
 	char byte;
 	if(::read(fd, &byte, 1) < 0){
+		std::cout << "could not read byte" << std::endl;
 		return 0x01;
 	}
 	else return byte;
 }
+

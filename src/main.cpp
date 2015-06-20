@@ -13,6 +13,8 @@
 #include <Communication/Connection.h>
 #include <Communication/Serial.h>
 #include <Collections/MessageQueue.h>
+#include <Collections/Status.h>
+#include <Sensors/Sonar.h>
 #include <thread>
 
 using namespace std;
@@ -25,14 +27,21 @@ int main(){
 
 	std::cout << "Krybot starting..." << std::endl;
 
-	MessageSimulator m(2000);
-	Serial n(3000, 9600, "/dev/ttyS2");
+	Status<Message> status1;
 
-	m.connect();
-	n.connect();
+	MessageSimulator m(20, &status1);
+	//Serial n(30, 9600, "/dev/ttyS2", &status2);
 
-	m.disconnect();
-	n.disconnect();
+	Sonar s("SONAR", &m);
+
+	s.start(300);
+
+	while(true){
+		std::cout << "distance " <<s.readSensor() << std::endl;
+		this_thread::sleep_for(chrono::seconds(1));
+	}
+
+	s.stop();
 	std::cout << "EXIT" << std::endl;
 	return 0;
 }
