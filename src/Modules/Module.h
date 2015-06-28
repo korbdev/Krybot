@@ -15,7 +15,7 @@
 using namespace std;
 
 class Module{
-private:
+protected:
 	string name;
 	Connection* connection;
 	bool running;

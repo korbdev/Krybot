@@ -9,14 +9,17 @@
 #include <iostream>
 #include <Modules/Module.h>
 
+#include <glog/logging.h>
+
 Module::~Module(){
 
 }
 
 void Module::start(int interval){
 	running = true;
-	connection->connect();
+	bool result = connection->connect();
 	t = thread(&Module::operator(), this, interval);
+	std::cout << "started " << result << std::endl;
 }
 
 void Module::stop(){
@@ -27,7 +30,6 @@ void Module::stop(){
 
 void Module::operator ()(int interval){
 	while(isRunning()){
-		std::cout << "MODUEL GET MESSAGE" << endl;
 		processMessage(connection->get());
 		std::this_thread::sleep_for(chrono::milliseconds(interval));
 	}

@@ -16,6 +16,7 @@
 #include <Collections/Status.h>
 #include <Sensors/Sonar.h>
 #include <thread>
+#include <glog/logging.h>
 
 using namespace std;
 //void f(MessageQueue* queue);
@@ -25,23 +26,27 @@ using namespace std;
 
 int main(){
 
+	google::InitGoogleLogging("krybot.logger");
 	std::cout << "Krybot starting..." << std::endl;
 
+	LOG(INFO) << "Krybot starting";
+
 	Status<Message> status1;
+	Status<Message> status2;
+	MessageSimulator m(1000, &status1);
+	Serial n(1000, 9600, "/dev/ttyS2", &status2);
 
-	MessageSimulator m(20, &status1);
-	//Serial n(30, 9600, "/dev/ttyS2", &status2);
+	Sonar s("SONAR", &n);
 
-	Sonar s("SONAR", &m);
-
-	s.start(300);
+	s.start(5000);
 
 	while(true){
-		std::cout << "distance " <<s.readSensor() << std::endl;
-		this_thread::sleep_for(chrono::seconds(1));
+		std::cout << " distance " <<s.readSensor() << std::endl;
+		s.registerSensor();
+		this_thread::sleep_for(chrono::seconds(2));
 	}
 
-	s.stop();
+	//s.stop();
 	std::cout << "EXIT" << std::endl;
 	return 0;
 }

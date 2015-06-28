@@ -11,18 +11,19 @@
 #include <Modules/Module.h>
 #include <Sensors/Hcsr04.h>
 #include <string>
-#include <vector>
+#include <map>
 
 using namespace std;
 
 class Sonar : public Module{
 private:
-	Hcsr04* sensor;
+	map<string, Hcsr04*>sensors;
 public:
-	Sonar(string name, Connection* connection):Module(name, connection){sensor = new Hcsr04("HCSR01", std::vector<float>(3,0), std::vector<float>(3,0));}
+	Sonar(string name, Connection* connection);
 	virtual void processMessage(Message msg) override;
+	void registerSensor();
 	int readSensor();
-	~Sonar(){delete sensor;}
+	~Sonar();
 };
 
 #endif /* SONAR_H_ */

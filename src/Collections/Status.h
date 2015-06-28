@@ -26,8 +26,8 @@ template<class T>
 T Status<T>::pop(){
 	T* item = ThreadingQueue<T>::queue.front();
 	T result(*item);
-	ThreadingQueue<T>::queue.pop();
-	delete item;
+	//ThreadingQueue<T>::queue.pop();
+	//delete item;
 	return result;
 }
 
@@ -36,7 +36,10 @@ void Status<T>::push(const T& item){
 	T* t = new T(item);
 
 	if(!ThreadingQueue<T>::queue.empty()){
-		pop();
+		//pop();
+		T* item = ThreadingQueue<T>::queue.front();
+		ThreadingQueue<T>::queue.pop();
+		delete item;
 	}
 	ThreadingQueue<T>::queue.push(t);
 }

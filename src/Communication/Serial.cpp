@@ -49,9 +49,12 @@ bool Serial::closeConnection(){
 bool Serial::write(Message msg){
 	string message = msg.getMessage();
 
-	for(int i = 0; i < message.length(); i++){
-		cout << message[i] << endl;
+	std::cout << "write " << msg.getMessage() << std::endl;
+	unsigned int wcount = 0;
+	while(wcount < message.length()){
+		wcount = ::write(fd, &message, message.length());
 	}
+	std::cout << "written " << wcount << std::endl;
 	return false;
 }
 
@@ -70,6 +73,7 @@ Message Serial::read(){
 		}
 	}
 	Message m(message);
+	std::cout << "read " << m.getMessage() << std::endl;
 	return m;
 }
 

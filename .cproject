@@ -39,7 +39,10 @@
 							</tool>
 							<tool id="cdt.managedbuild.tool.gnu.c.linker.exe.debug.652545112" name="GCC C Linker" superClass="cdt.managedbuild.tool.gnu.c.linker.exe.debug"/>
 							<tool id="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug.1916889226" name="GCC C++ Linker" superClass="cdt.managedbuild.tool.gnu.cpp.linker.exe.debug">
-								<option id="gnu.cpp.link.option.flags.986569105" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-pthread -std=c++11 -Wl,--no-as-needed" valueType="string"/>
+								<option id="gnu.cpp.link.option.flags.986569105" name="Linker flags" superClass="gnu.cpp.link.option.flags" value="-pthread -std=c++11 -Wl,--no-as-needed -lglog" valueType="string"/>
+								<option id="gnu.cpp.link.option.libs.2023444936" superClass="gnu.cpp.link.option.libs" valueType="libs">
+									<listOptionValue builtIn="false" value="glog"/>
+								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.linker.input.1968950847" superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>

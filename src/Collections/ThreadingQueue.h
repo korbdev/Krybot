@@ -13,6 +13,7 @@
 #include <condition_variable>
 #include <Communication/Message.h>
 #include <thread>
+#include <iostream>
 
 template<class T>
 class ThreadingQueue {
@@ -40,6 +41,7 @@ template<class T>
 T ThreadingQueue<T>::s_pop(){
 	std::unique_lock<std::mutex> lock(monitorMutex);
 	while(queue.empty()){
+		std::cout << "wait" << std::endl;
 		condition.wait(lock);
 	}
 	T item = pop();
