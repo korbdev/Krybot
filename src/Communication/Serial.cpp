@@ -17,7 +17,7 @@
 bool Serial::initializeConnection(){
 	struct termios serial;
 
-	fd = open(path.c_str(), O_RDWR | O_NOCTTY | O_NDELAY);
+	fd = open(path.c_str(), O_RDWR | O_NOCTTY);
 
 	if(fd == -1){
 		std::cout << "could not open file" << std::endl;
@@ -31,14 +31,32 @@ bool Serial::initializeConnection(){
 
 	serial.c_iflag = 0;
 	serial.c_oflag = 0;
-	serial.c_lflag = 0;
-	serial.c_cflag = 0;
-	serial.c_cc[VMIN] = 0;
-	serial.c_cc[VTIME] = 0;
+	serial.c_lflag = ICANON;
+	serial.c_cflag = B115200 | CRTSCTS | CS8 | CLOCAL | CREAD;
 
-	serial.c_cflag = B9600 | CS8| CREAD | CSTOPB;
-	tcsetattr(fd, TCSANOW, &serial);
-	return true;
+	serial.c_cc[VINTR]    = 0;     /* Ctrl-c */
+	serial.c_cc[VQUIT]    = 0;     /* Ctrl-\ */
+	serial.c_cc[VERASE]   = 0;     /* del */
+	serial.c_cc[VKILL]    = 0;     /* @ */
+	serial.c_cc[VEOF]     = 4;     /* Ctrl-d */
+	serial.c_cc[VTIME]    = 0;     /* inter-character timer unused */
+	serial.c_cc[VMIN]     = 1;     /* blocking read until 1 character arrives */
+	serial.c_cc[VSWTC]    = 0;     /* '\0' */
+	serial.c_cc[VSTART]   = 0;     /* Ctrl-q */
+	serial.c_cc[VSTOP]    = 0;     /* Ctrl-s */
+	serial.c_cc[VSUSP]    = 0;     /* Ctrl-z */
+	serial.c_cc[VEOL]     = 0;     /* '\0' */
+	serial.c_cc[VREPRINT] = 0;     /* Ctrl-r */
+	serial.c_cc[VDISCARD] = 0;     /* Ctrl-u */
+	serial.c_cc[VWERASE]  = 0;     /* Ctrl-w */
+	serial.c_cc[VLNEXT]   = 0;     /* Ctrl-v */
+	serial.c_cc[VEOL2]    = 0;     /* '\0' */
+
+	tcflush(fd, TCIFLUSH);
+	if(tcsetattr(fd, TCSANOW, &serial) >= 0){
+		return true;
+	}
+	else return false;
 }
 
 bool Serial::closeConnection(){
@@ -50,8 +68,8 @@ bool Serial::write(Message msg){
 	string message = msg.getMessage();
 
 	std::cout << "write " << msg.getMessage() << std::endl;
-	unsigned int wcount = 0;
-	while(wcount < message.length()){
+	int wcount = 0;
+	while(wcount < (int)message.length()){
 		wcount = ::write(fd, &message, message.length());
 	}
 	std::cout << "written " << wcount << std::endl;
@@ -59,21 +77,19 @@ bool Serial::write(Message msg){
 }
 
 Message Serial::read(){
-	string message = "";
-	if(char byte = readByte() == 0x02){
-		bool completed = false;
-		while(!completed){
-			byte = readByte();
-			if(byte == 0x03){
-				completed = true;
-			}
-			else{
-				message += byte;
-			}
-		}
-	}
+	std::cout << "start read " << std::endl;
+	char buffer[512];
+	/*char byte = readByte();
+	while(byte != 0x03){
+		if(byte != 0x02)
+			message += byte;
+		byte = readByte();
+	}*/
+	int res = ::read(fd, &buffer, 512);
+	buffer[res] = 0;
+	string message(buffer);
 	Message m(message);
-	std::cout << "read " << m.getMessage() << std::endl;
+	std::cout << "read " << m.getMessage() << res << std::endl;
 	return m;
 }
 
@@ -82,7 +98,9 @@ char Serial::readByte(){
 	if(::read(fd, &byte, 1) < 0){
 		std::cout << "could not read byte" << std::endl;
 		return 0x01;
+	}else {
+		return byte;
 	}
-	else return byte;
+
 }
 

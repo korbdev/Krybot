@@ -34,14 +34,14 @@ int main(){
 	Status<Message> status1;
 	Status<Message> status2;
 	MessageSimulator m(1000, &status1);
-	Serial n(1000, 9600, "/dev/ttyS2", &status2);
+	Serial n(1000, 9600, "/dev/ttyACM0", &status2);
 
 	Sonar s("SONAR", &n);
 
 	s.start(5000);
 
 	while(true){
-		std::cout << " distance " <<s.readSensor() << std::endl;
+		std::cout << " distance " << s.readSensor() << std::endl;
 		s.registerSensor();
 		this_thread::sleep_for(chrono::seconds(2));
 	}

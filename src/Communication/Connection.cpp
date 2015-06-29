@@ -39,7 +39,7 @@ void Connection::operator ()(){
 bool Connection::connect(){
 	connected = initializeConnection();
 	t = thread(&Connection::operator (), this);
-	std::cout << "connected" << std::endl;
+	std::cout << "connected " << connected << std::endl;
 	return connected;
 }
 

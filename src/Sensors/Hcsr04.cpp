@@ -5,6 +5,7 @@
  *      Author: rkorb
  */
 #include <Sensors/Hcsr04.h>
+#include <iostream>
 
 int Hcsr04::getDistance(){
 	return distance.s_pop();
