@@ -16,17 +16,16 @@ using namespace std;
 
 class Module{
 protected:
-	string name;
 	Connection* connection;
 	bool running;
 	thread t;
 public:
-	Module(string name, Connection* connection):name(name), connection(connection), running(false){}
+	Module():connection(0),running(false){}
 	Module(Module& other) = delete;
 	Module& operator=(Module& other) = delete;
 	virtual ~Module();
 	virtual void processMessage(Message msg) = 0;
-	void start(int interval);
+	void start(Connection* connection, int interval);
 	void stop();
 	void operator()(int interval);
 	bool isRunning() const;

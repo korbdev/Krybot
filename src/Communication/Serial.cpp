@@ -66,11 +66,10 @@ bool Serial::closeConnection(){
 
 bool Serial::write(Message msg){
 	string message = msg.getMessage();
-
 	std::cout << "write " << msg.getMessage() << std::endl;
 	int wcount = 0;
 	while(wcount < (int)message.length()){
-		wcount = ::write(fd, &message, message.length());
+		wcount = ::write(fd, message.c_str(), message.length());
 	}
 	std::cout << "written " << wcount << std::endl;
 	return false;
@@ -78,14 +77,9 @@ bool Serial::write(Message msg){
 
 Message Serial::read(){
 	std::cout << "start read " << std::endl;
-	char buffer[512];
-	/*char byte = readByte();
-	while(byte != 0x03){
-		if(byte != 0x02)
-			message += byte;
-		byte = readByte();
-	}*/
-	int res = ::read(fd, &buffer, 512);
+	char buffer[512]; //TODO: include constant for buffersize
+
+	int res = ::read(fd, &buffer, sizeof(buffer));
 	buffer[res] = 0;
 	string message(buffer);
 	Message m(message);

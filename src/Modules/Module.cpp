@@ -15,7 +15,8 @@ Module::~Module(){
 
 }
 
-void Module::start(int interval){
+void Module::start(Connection* connection, int interval){
+	this->connection = connection;
 	running = true;
 	bool result = connection->connect();
 	t = thread(&Module::operator(), this, interval);
@@ -37,8 +38,4 @@ void Module::operator ()(int interval){
 
 bool Module::isRunning() const{
 	return running;
-}
-
-string Module::getName() const{
-	return name;
 }

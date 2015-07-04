@@ -9,7 +9,19 @@
 #include <vector>
 #include <iostream>
 
-Sonar::Sonar(string name, Connection* connection):Module(name, connection){
+atomic<Sonar*> Sonar::pInstance(0);
+
+Sonar* Sonar::getInstance(){
+	if(!pInstance){
+		std::unique_lock<std::mutex>(creationLock);
+		if(!pInstance){
+			pInstance = new Sonar();
+		}
+	}
+	return pInstance;
+}
+
+Sonar::Sonar():Module(){
 	std::string sensorName = "HCSR1";
 	Hcsr04* s1 = new Hcsr04(sensorName, vector<float>(3,0),vector<float>(3,0));
 	s1->setDistance(0); //initialize with 0 to avoid waiting state, when no message is arriving
@@ -27,7 +39,9 @@ void Sonar::processMessage(Message msg){
 	std::cout << "PROCESS " << messageType << std::endl;
 	switch(messageType){
 	case REGISTER:
-		std::cout << "REGISTERED" << std::endl;
+		std::cout << "REGISTERED " << msg.getMessage() << std::endl;
+		break;
+	case UNREGISTER:
 		break;
 	case MEASURE:
 		setSensorData(msg);
@@ -38,8 +52,7 @@ void Sonar::processMessage(Message msg){
 }
 
 void Sonar::registerSensor(){
-	std::cout << "REGISTERED" << std::endl;
-	Message m("{\"type\":0}");
+	Message m("{\"type\":1}");
 	connection->write(m);
 }
 

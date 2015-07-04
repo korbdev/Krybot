@@ -37,3 +37,13 @@ double Message::getDoubleValue(std::string key, double defaultValue){
 bool Message::getBoolValue(std::string key, bool defaultValue){
 	return root.get(key, defaultValue).asBool();
 }
+
+std::vector<float> Message::getVector(std::string key, float defaultValue){
+	Json::Value sequence = root[key];
+	std::vector<float> v;
+	std::vector<float>::iterator it;
+	for(unsigned int i = 0; i < sequence.size(); i++){
+		v.insert(it, sequence[i].asFloat());
+	}
+	return v;
+}

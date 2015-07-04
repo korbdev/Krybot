@@ -10,6 +10,7 @@
 
 #include <string>
 #include <json/json.h>
+#include <vector>
 
 class Message{
 private:
@@ -26,6 +27,7 @@ public:
 	int 			getIntegerValue(std::string key, int defaultValue);
 	double			getDoubleValue(std::string key, double defaultValue);
 	bool			getBoolValue(std::string key, bool defaultValue);
+	std::vector<float>	getVector(std::string key, float defaultValue);
 };
 
 
