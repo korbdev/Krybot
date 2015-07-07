@@ -5,6 +5,7 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
 ../src/Communication/Connection.cpp \
+../src/Communication/HttpClient.cpp \
 ../src/Communication/Message.cpp \
 ../src/Communication/MessageSimulator.cpp \
 ../src/Communication/Serial.cpp \
@@ -12,6 +13,7 @@ CPP_SRCS += \
 
 OBJS += \
 ./src/Communication/Connection.o \
+./src/Communication/HttpClient.o \
 ./src/Communication/Message.o \
 ./src/Communication/MessageSimulator.o \
 ./src/Communication/Serial.o \
@@ -19,6 +21,7 @@ OBJS += \
 
 CPP_DEPS += \
 ./src/Communication/Connection.d \
+./src/Communication/HttpClient.d \
 ./src/Communication/Message.d \
 ./src/Communication/MessageSimulator.d \
 ./src/Communication/Serial.d \

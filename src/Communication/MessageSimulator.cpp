@@ -26,12 +26,12 @@ bool MessageSimulator::write(Message msg){
 	string message = msg.getMessage();
 
 	for(unsigned int i = 0; i < message.length(); i++){
-		cout << typeid(message[i]).name() << endl;
+		//cout << typeid(message[i]).name() << endl;
 	}
 	return true;
 }
 
 Message MessageSimulator::read(){
-	Message msg("{\"HCSR01\":12345}");
+	Message msg("{\"type\":3,\"HCSR1\":234,\"HCSR2\":23423,\"HCSR3\":22}");
 	return msg;
 }

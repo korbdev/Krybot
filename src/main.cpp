@@ -13,11 +13,13 @@
 #include <Communication/Connection.h>
 #include <Communication/Serial.h>
 #include <Communication/TcpSocket.h>
+#include <Communication/HttpClient.h>
 #include <Collections/MessageQueue.h>
 #include <Collections/Status.h>
 #include <Sensors/Sonar.h>
 #include <thread>
 #include <glog/logging.h>
+#include <ctime>
 
 using namespace std;
 //void f(MessageQueue* queue);
@@ -26,7 +28,10 @@ using namespace std;
 
 
 int main(){
-
+	timeval a;
+	timeval b;
+	gettimeofday(&a, 0);
+	gettimeofday(&b, 0);
 	google::InitGoogleLogging("krybot.logger");
 	std::cout << "Krybot starting..." << std::endl;
 
@@ -35,19 +40,24 @@ int main(){
 	Status<Message> status1;
 	Status<Message> status2;
 	Status<Message> status3;
+	Status<Message> status4;
 
 	MessageSimulator m(1000, &status1);
 	Serial n(1000, 9600, "/dev/ttyACM0", &status2);
 	TcpSocket tcp("127.0.0.1", 5000, 200, &status3);
+	HttpClient http("127.0.0.1", 5000, 20, &status4);
 
 	Sonar* s = Sonar::getInstance();
 
-	s->start(&tcp, 5000);
+	s->start(&http, 5000);
 
 	while(true){
-		std::cout << " distance " << s->readSensor() << std::endl;
-		s->registerSensor();
+		gettimeofday(&a, 0);
+
+		//s->registerSensor();
 		this_thread::sleep_for(chrono::seconds(2));
+		gettimeofday(&b, 0);
+		std::cout << "distance " << s->readSensor() << " "  << (b.tv_sec - a.tv_sec)<< std::endl;
 	}
 
 	//s.stop();
